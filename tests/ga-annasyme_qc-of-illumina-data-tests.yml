@@ -1,10 +1,9 @@
-# Test for the Galaxy Australia workflow "QC of Illumina data", published by annasyme
-# (workflow db0867756cb233b7), latest version, updated 12 Mar 2026.
-# Workflow file: ga-annasyme_qc-of-illumina-data.ga, copied from gtntesting workflow 10ab0f1dfca6c65d on 15 Oct 2026.
+# Test for "QC of Illumina data", published on usegalaxy.org.au by annasyme (workflow db0867756cb233b7).
+# Source and version: workflows.yml. The workflow is downloaded at each run; the latest version was 6 on 15 Oct 2026.
 # Test runs on: usegalaxy.org.au, account gtntesting (API key in the GitHub secret GALAXY_API_KEY).
 # Test data: history "workflow-testing: small test data" (ee825ba6ed112e3a) in gtntesting.
-#   The dataset URLs below are readable by anyone with the link (checked 15 Oct 2026). The history itself is not published.
-#   If the datasets are deleted or purged, this test fails. A Zenodo copy would be more durable.
+#   The dataset URLs below are readable by anyone with the link (checked 15 Oct 2026).
+#   Do not delete or purge these datasets: the tests need them.
 # Pass rule: all jobs finish without error, and every output exists and is not empty.
 - doc: FastQC and MultiQC on a 4 MB Illumina read pair.
   job:

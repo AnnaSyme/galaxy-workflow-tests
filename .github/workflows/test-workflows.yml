@@ -1,48 +1,46 @@
 name: Test workflows
 
 # Runs by hand only (workflow_dispatch) until Galaxy Australia agrees to scheduled runs.
-# Each workflow runs on usegalaxy.org.au in the gtntesting account. Planemo checks the outputs.
-# A maximum of 2 workflows run at a time, to keep the load on Galaxy Australia low.
+# Each workflow is downloaded from its public source (workflows.yml), then run with Planemo
+# on usegalaxy.org.au in the gtntesting account. A maximum of 2 workflows run at a time.
 
 on:
   workflow_dispatch:
     inputs:
-      workflow:
-        description: "Workflow file to test, or all"
+      workflows:
+        description: "Names from workflows.yml, comma separated, or all"
         required: true
         default: all
-        type: choice
-        options:
-          - all
-          - ga-annasyme_qc-of-illumina-data
-          - ga-annasyme_what-is-in-my-reads
-          - wfh-875_repeat-masking-tsi
+
+permissions:
+  contents: read
 
 env:
-  GALAXY_URL: https://usegalaxy.org.au
   PLANEMO_VERSION: 0.75.35
 
 jobs:
   list:
-    name: List workflows to test
+    name: List workflows
     runs-on: ubuntu-latest
     outputs:
-      workflows: ${{ steps.pick.outputs.workflows }}
+      names: ${{ steps.list.outputs.names }}
     steps:
       - uses: actions/checkout@v4
-      - name: Pick workflows
-        id: pick
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pyyaml
+      - name: List
+        id: list
+        env:
+          SELECTION: ${{ inputs.workflows }}
         run: |
-          if [ "${{ inputs.workflow }}" = "all" ]; then
-            list=$(ls workflows/*.ga | xargs -n1 basename | sed 's/\.ga$//' | jq -R . | jq -sc .)
-          else
-            list=$(printf '%s' '${{ inputs.workflow }}' | jq -R . | jq -sc .)
-          fi
-          echo "workflows=$list" >> "$GITHUB_OUTPUT"
-          echo "Testing: $list"
+          names=$(python scripts/workflows.py list "$SELECTION")
+          echo "names=$names" >> "$GITHUB_OUTPUT"
+          echo "Testing: $names"
 
   test:
-    name: ${{ matrix.workflow }}
+    name: ${{ matrix.name }}
     needs: list
     runs-on: ubuntu-latest
     timeout-minutes: 240
@@ -50,7 +48,11 @@ jobs:
       fail-fast: false
       max-parallel: 2
       matrix:
-        workflow: ${{ fromJson(needs.list.outputs.workflows) }}
+        name: ${{ fromJson(needs.list.outputs.names) }}
+    env:
+      GALAXY_URL: https://usegalaxy.org.au
+      GALAXY_API_KEY: ${{ secrets.GALAXY_API_KEY }}
+      NAME: ${{ matrix.name }}
     steps:
       - uses: actions/checkout@v4
 
@@ -59,30 +61,58 @@ jobs:
           python-version: "3.11"
 
       - name: Install Planemo
-        run: pip install "planemo==${{ env.PLANEMO_VERSION }}"
+        run: pip install "planemo==$PLANEMO_VERSION"
+
+      - name: Record start time
+        run: echo "RUN_STARTED_AT=$(date -u +%Y-%m-%dT%H:%M:%S)" >> "$GITHUB_ENV"
+
+      - name: Download workflow from its source
+        run: python scripts/workflows.py fetch "$NAME" run
 
       - name: Run Planemo test
         run: |
+          mkdir -p reports
           planemo test \
             --engine external_galaxy \
             --galaxy_url "$GALAXY_URL" \
-            --galaxy_user_key "${{ secrets.GALAXY_API_KEY }}" \
-            --history_name "github-test: ${{ matrix.workflow }} (run ${{ github.run_number }})" \
+            --galaxy_user_key "$GALAXY_API_KEY" \
+            --history_name "github-test: $NAME (run ${{ github.run_number }})" \
             --test_timeout 10800 \
-            --test_output "reports/${{ matrix.workflow }}.html" \
-            --test_output_json "reports/${{ matrix.workflow }}.json" \
-            --test_output_text "reports/${{ matrix.workflow }}.txt" \
-            "workflows/${{ matrix.workflow }}.ga"
+            --test_output "reports/$NAME.html" \
+            --test_output_json "reports/$NAME.json" \
+            --test_output_text "reports/$NAME.txt" \
+            "run/$NAME.ga"
 
-      - name: Show text report
+      - name: Show result
         if: always()
-        run: cat "reports/${{ matrix.workflow }}.txt" || true
+        run: |
+          cp "run/$NAME.source.json" reports/ 2>/dev/null || true
+          cat "reports/$NAME.txt" 2>/dev/null || echo "No text report."
+          {
+            echo "### $NAME"
+            python -c "import json; s=json.load(open('run/$NAME.source.json')); print(f\"Tested {s['source']} {s['id']} version {s['version']} ({s['url']})\")" 2>/dev/null || echo "Workflow download failed."
+            echo
+            cat "reports/$NAME.txt" 2>/dev/null || true
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Check reports do not contain the API key
+        id: scan
+        if: always()
+        run: |
+          if [ -d reports ] && grep -rqF "$GALAXY_API_KEY" reports/; then
+            echo "API key found in a report. The reports are not uploaded."
+            exit 1
+          fi
 
       - name: Upload reports
-        if: always()
+        if: always() && steps.scan.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
-          name: report-${{ matrix.workflow }}
+          name: report-${{ matrix.name }}
           path: reports/
           if-no-files-found: warn
           retention-days: 90
+
+      - name: Clean up the test account
+        if: always()
+        run: python scripts/cleanup.py "reports/$NAME.json" "$RUN_STARTED_AT"

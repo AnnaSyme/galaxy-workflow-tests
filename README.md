@@ -2,40 +2,40 @@
 
 [![Test workflows](https://github.com/AnnaSyme/galaxy-workflow-tests/actions/workflows/test-workflows.yml/badge.svg)](https://github.com/AnnaSyme/galaxy-workflow-tests/actions/workflows/test-workflows.yml)
 
-Automatic tests for the Galaxy workflows by Anna Syme. Each test runs the workflow on real data on Galaxy Australia and checks that it still works.
+Automatic tests for the Galaxy workflows by Anna Syme. Each test downloads the published workflow from WorkflowHub or Galaxy Australia, runs it on small test data on Galaxy Australia, and checks every output. A pass means that the version the public imports works.
 
 **What is tested**
 
-One `.ga` workflow file and one Planemo test file per workflow, in `workflows/`. The badge above shows the result of the last run. The reports, the logs and the pass or fail result of each run are in the Actions tab.
+| Workflow | Source |
+|---|---|
+| QC of Illumina data | Galaxy Australia, published by annasyme |
+| What is in my sequencing reads? | Galaxy Australia, published by annasyme |
+| Repeat masking - TSI | WorkflowHub 875 |
 
-| Workflow | Source | Files |
-|---|---|---|
-| QC of Illumina data | Galaxy Australia, user annasyme | `workflows/ga-annasyme_qc-of-illumina-data.ga` |
-| What is in my sequencing reads? | Galaxy Australia, user annasyme | `workflows/ga-annasyme_what-is-in-my-reads.ga` |
-| Repeat masking - TSI | WorkflowHub 875, Version 3 | `workflows/wfh-875_repeat-masking-tsi.ga` |
+The full list, with IDs and versions, is in `workflows.yml`. Results for each run are in the Actions tab: a summary per workflow, plus HTML and JSON reports.
 
 **How it works**
 
-A GitHub Action (`.github/workflows/test-workflows.yml`) installs Planemo and runs `planemo test` with the external Galaxy engine. Planemo uploads the test data to usegalaxy.org.au, runs the workflow in a test account, and checks each output. Galaxy does the computing, not GitHub: these workflows need tools and reference data that are only on Galaxy Australia.
+1. `workflows.yml` lists each workflow: source, ID, and version (latest, or a fixed version).
+2. The Action (`.github/workflows/test-workflows.yml`) downloads each workflow from its source without a key, so only public workflows can be tested.
+3. Planemo runs the workflow on usegalaxy.org.au in a test account, with the test file `tests/<name>-tests.yml`, and checks each output.
+4. After a pass, the Action purges the test history and deletes the workflow copy that Planemo imported, so the test account does not fill up. After a fail, both are kept for inspection.
 
-Pass rule: all jobs finish without error, and every output exists and is not empty.
-
-The Action runs by hand only (Run workflow in the Actions tab). A monthly schedule is possible later, with the agreement of Galaxy Australia.
+Galaxy does the computing, not GitHub: the workflows need tools and reference data that are on Galaxy Australia. Pass rule: all jobs finish without error, and every output exists and is not empty. A maximum of 2 workflows run at a time. The Action runs by hand only (Run workflow in the Actions tab); a schedule needs the agreement of Galaxy Australia.
 
 **Test data**
 
-Very small subsets, 4 MB or less, so that the tests are quick and the load on Galaxy Australia is low. Each test file gives the URL of each input dataset. The data is held in the Galaxy Australia test account and is readable by link.
+Very small files, in a history in the Galaxy Australia test account. Each test file gives the URL of each input.
 
 **How to add a workflow**
 
-1. Put the `.ga` file in `workflows/`.
-2. Put a Planemo test file next to it, named `<ga file name>-tests.yml`. Planemo finds the test file by this name.
-3. In the test file, give a URL for each input and an assertion for each output.
-4. Add the workflow name to the `workflow` choice list in `.github/workflows/test-workflows.yml`.
+1. Add an entry to `workflows.yml`.
+2. Add `tests/<name>-tests.yml`: a URL for each input and an assertion for each output.
+3. Run the Action with that name.
 
 **Setup**
 
-The Action needs one repository secret, `GALAXY_API_KEY`: the API key of the Galaxy Australia test account.
+One repository secret, `GALAXY_API_KEY`: the API key of the Galaxy Australia test account.
 
 **Credits**
 

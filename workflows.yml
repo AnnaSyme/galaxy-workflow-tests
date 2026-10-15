@@ -1,0 +1,26 @@
+# Workflows to test. The Action downloads each workflow from its source at each run,
+# without a key, so the test runs the version that the public sees.
+#
+# name:    file name stem. The test file is tests/<name>-tests.yml.
+# source:  galaxy (published on usegalaxy.org.au) or workflowhub.
+# id:      Galaxy workflow ID, or WorkflowHub workflow number.
+# version: latest, or a fixed version. WorkflowHub: the version ID from the TRS API
+#          (not always the same as the version name). Galaxy: the version index.
+
+- name: ga-annasyme_qc-of-illumina-data
+  title: QC of Illumina data
+  source: galaxy
+  id: db0867756cb233b7
+  version: latest
+
+- name: ga-annasyme_what-is-in-my-reads
+  title: What is in my sequencing reads? - Version 1
+  source: galaxy
+  id: ed3e48a73b5aaa56
+  version: latest
+
+- name: wfh-875_repeat-masking-tsi
+  title: Repeat masking - TSI
+  source: workflowhub
+  id: 875
+  version: latest

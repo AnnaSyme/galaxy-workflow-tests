@@ -1,4 +1,5 @@
 reports/
+run/
 tool_test_output.*
 .planemo/
 __pycache__/

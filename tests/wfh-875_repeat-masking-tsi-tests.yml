@@ -1,9 +1,9 @@
-# Test for WorkflowHub 875 "Repeat masking - TSI", Version 3 (version ID 3, 21 Jun 2024).
-# Workflow file: wfh-875_repeat-masking-tsi.ga, copied from gtntesting workflow 28153e5ae815e24c on 15 Oct 2026.
+# Test for WorkflowHub 875 "Repeat masking - TSI".
+# Source and version: workflows.yml. The workflow is downloaded at each run; the latest version was 3 (version ID 3) on 15 Oct 2026.
 # Test runs on: usegalaxy.org.au, account gtntesting (API key in the GitHub secret GALAXY_API_KEY).
 # Test data: history "workflow-testing: small test data" (ee825ba6ed112e3a) in gtntesting.
-#   The dataset URLs below are readable by anyone with the link (checked 15 Oct 2026). The history itself is not published.
-#   If the datasets are deleted or purged, this test fails. A Zenodo copy would be more durable.
+#   The dataset URLs below are readable by anyone with the link (checked 15 Oct 2026).
+#   Do not delete or purge these datasets: the tests need them.
 # Pass rule: all jobs finish without error, and every output exists and is not empty.
 # To check on the first run: RepeatModeler can find no repeat families in a 2.4 MB genome. If so, use a larger subset.
 - doc: Find and mask repeats in 2.4 MB of the Mucor mucedo genome.
