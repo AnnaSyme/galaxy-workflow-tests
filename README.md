@@ -34,6 +34,10 @@ The test data is in a history in the test account. Each test file has a link to 
 1. Add the workflow to `workflows.yml`.
 2. Add a test file, `tests/<name>-tests.yml`, with a link to each input file and a check for each output.
 
+**Related work**
+
+This repository is an interim setup for routine testing of these workflows. A broader workflow checker is in development separately, with [@mthang](https://github.com/mthang): [galaxy-workflow-validation](https://github.com/mthang/galaxy-workflow-validation). It adds static checks of the workflow file and of the tools installed on a Galaxy server. The tool version check here comes from that work.
+
 **Credits**
 
 Workflows by Anna Syme ([ORCID 0000-0002-9906-0673](https://orcid.org/0000-0002-9906-0673)). Repeat masking - TSI is by Anna Syme and Luke Silver. Galaxy Australia is a service of the Australian BioCommons and its partners.
