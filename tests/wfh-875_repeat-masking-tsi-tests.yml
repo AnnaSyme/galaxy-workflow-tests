@@ -5,7 +5,7 @@
 #   The dataset URLs below are readable by anyone with the link (checked 15 Oct 2026).
 #   Do not delete or purge these datasets: the tests need them.
 # Pass rule: all jobs finish without error, and every output exists and is not empty.
-# To check on the first run: RepeatModeler can find no repeat families in a 2.4 MB genome. If so, use a larger subset.
+# Checked on the first run (15 Oct 2026): RepeatModeler finds 4 repeat families in this 2.4 MB genome, so the masking step has a real library.
 - doc: Find and mask repeats in 2.4 MB of the Mucor mucedo genome.
   job:
     "genome.fasta":
