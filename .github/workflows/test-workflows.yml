@@ -11,6 +11,10 @@ on:
         description: "Names from workflows.yml, comma separated, or all"
         required: true
         default: all
+      verbose:
+        description: "Verbose Planemo log, to find where a run stops"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -50,6 +54,7 @@ jobs:
       GALAXY_URL: https://usegalaxy.org.au
       GALAXY_API_KEY: ${{ secrets.GALAXY_API_KEY }}
       NAME: ${{ matrix.name }}
+      VERBOSE: ${{ inputs.verbose && '-v' || '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -70,7 +75,7 @@ jobs:
         run: |
           mkdir -p reports
           set +e
-          planemo test \
+          planemo $VERBOSE test \
             --engine external_galaxy \
             --galaxy_url "$GALAXY_URL" \
             --galaxy_user_key "$GALAXY_API_KEY" \
