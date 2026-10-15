@@ -36,7 +36,7 @@ The test data is in a history in the test account. Each test file has a link to 
 
 **Related work**
 
-This repository is an interim setup for routine testing of these workflows. A broader workflow checker is in development separately, with [@mthang](https://github.com/mthang): [galaxy-workflow-validation](https://github.com/mthang/galaxy-workflow-validation). It adds static checks of the workflow file and of the tools installed on a Galaxy server. The tool version check here comes from that work.
+This repository is an interim setup for routine testing of these workflows. A broader workflow checker is in development separately, as joint work with [@mthang](https://github.com/mthang): [galaxy-workflow-validation](https://github.com/mthang/galaxy-workflow-validation). That project adds static checks of the workflow file and of the tools installed on a Galaxy server. The tool version check here draws on it.
 
 **Credits**
 
