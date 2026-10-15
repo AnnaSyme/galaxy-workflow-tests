@@ -18,7 +18,11 @@ Each run also lists any tool that Galaxy ran at a different version than the wor
 
 **See the results**
 
-Open the [Actions tab](https://github.com/AnnaSyme/galaxy-workflow-tests/actions) and click the latest run. Each workflow shows pass or fail, with a short summary. The full report for each workflow is under Artifacts at the bottom of the run page.
+[RESULTS.md](RESULTS.md) shows the latest result of each workflow, with the date it was last tested and last passed. `results/history.csv` keeps every run.
+
+A failing workflow gets an open [issue](https://github.com/AnnaSyme/galaxy-workflow-tests/issues). The issue closes itself when the workflow passes again.
+
+For detail, open the [Actions tab](https://github.com/AnnaSyme/galaxy-workflow-tests/actions) and click a run. The full report for each workflow is under Artifacts at the bottom of the run page, kept for 90 days.
 
 **How it works**
 

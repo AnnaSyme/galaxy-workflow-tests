@@ -4,3 +4,5 @@ tool_test_output.*
 .planemo/
 __pycache__/
 .DS_Store
+outcome.json
+all-reports/
