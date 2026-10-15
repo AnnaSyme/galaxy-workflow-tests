@@ -15,9 +15,6 @@ on:
 permissions:
   contents: read
 
-env:
-  PLANEMO_VERSION: 0.75.35
-
 jobs:
   list:
     name: List workflows
@@ -61,7 +58,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install Planemo
-        run: pip install "planemo==$PLANEMO_VERSION"
+        run: pip install -r requirements.txt
 
       - name: Record start time
         run: echo "RUN_STARTED_AT=$(date -u +%Y-%m-%dT%H:%M:%S)" >> "$GITHUB_ENV"
