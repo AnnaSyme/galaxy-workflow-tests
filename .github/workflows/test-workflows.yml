@@ -100,6 +100,13 @@ jobs:
             cat "reports/$NAME.txt" 2>/dev/null || true
           } >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Compare tool versions
+        if: always()
+        run: |
+          mkdir -p reports
+          python scripts/versions.py "run/$NAME.ga" "reports/$NAME.json" | tee "reports/$NAME.versions.md"
+          { echo; cat "reports/$NAME.versions.md"; } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Check reports do not contain the API key
         id: scan
         if: always()

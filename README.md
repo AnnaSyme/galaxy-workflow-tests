@@ -6,6 +6,8 @@ This repository checks that Galaxy workflows by Anna Syme still work.
 
 For each workflow, it gets the published version, runs it on [Galaxy Australia](https://usegalaxy.org.au) with small test data, and checks the results. A workflow passes when every job finishes without an error and every output exists and is not empty.
 
+Each run also lists any tool that Galaxy ran at a different version than the workflow asks for. This is a warning only: the jobs can still pass, but the results can differ.
+
 **Workflows tested**
 
 | Workflow | Published on |
