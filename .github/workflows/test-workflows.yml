@@ -69,16 +69,24 @@ jobs:
       - name: Run Planemo test
         run: |
           mkdir -p reports
+          set +e
           planemo test \
             --engine external_galaxy \
             --galaxy_url "$GALAXY_URL" \
             --galaxy_user_key "$GALAXY_API_KEY" \
             --history_name "github-test: $NAME (run ${{ github.run_number }})" \
             --test_timeout 10800 \
-            --test_output "reports/$NAME.html" \
             --test_output_json "reports/$NAME.json" \
             --test_output_text "reports/$NAME.txt" \
             "run/$NAME.ga"
+          echo "Planemo exit code $?. Pass or fail is decided in the next step, from the JSON report."
+
+      - name: Check result
+        run: python scripts/result.py "reports/$NAME.json" "run/$NAME.html.json"
+
+      - name: Build HTML report
+        if: always()
+        run: planemo test_reports "run/$NAME.html.json" --test_output "reports/$NAME.html" || echo "HTML report not built."
 
       - name: Show result
         if: always()

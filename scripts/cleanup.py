@@ -57,13 +57,15 @@ def main(report_path, run_started_at):
         api("DELETE", f"histories/{h}?purge=true")
         print(f"Purged history {h} ({name})")
 
+    # The report holds the workflow version ID. instance=true maps it to the stored workflow.
     for w in sorted(workflow_ids):
-        created = api("GET", f"workflows/{w}").get("create_time", "")
+        stored = api("GET", f"workflows/{w}?instance=true")
+        created = stored.get("create_time", "")
         if created < run_started_at:
-            print(f"Skipped workflow {w}: created {created}, before this run ({run_started_at})")
+            print(f"Skipped workflow {stored['id']}: created {created}, before this run ({run_started_at})")
             continue
-        api("DELETE", f"workflows/{w}")
-        print(f"Deleted workflow copy {w} (created {created})")
+        api("DELETE", f"workflows/{stored['id']}")
+        print(f"Deleted workflow copy {stored['id']} ({stored['name']}, created {created})")
 
 
 if __name__ == "__main__":
