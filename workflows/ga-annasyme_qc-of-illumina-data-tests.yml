@@ -1,0 +1,21 @@
+# Test for the Galaxy Australia workflow "QC of Illumina data", published by annasyme
+# (workflow db0867756cb233b7), latest version, updated 12 Mar 2026.
+# Workflow file: ga-annasyme_qc-of-illumina-data.ga, copied from gtntesting workflow 10ab0f1dfca6c65d on 15 Oct 2026.
+# Test runs on: usegalaxy.org.au, account gtntesting (API key in the GitHub secret GALAXY_API_KEY).
+# Test data: history "workflow-testing: small test data" (ee825ba6ed112e3a). The data must be public for this test to run.
+# Pass rule: all jobs finish without error, and every output exists and is not empty.
+- doc: FastQC and MultiQC on a 4 MB Illumina read pair.
+  job:
+    "Illumina R1 reads":
+      class: File
+      location: https://usegalaxy.org.au/api/datasets/a6e389a98c2d16783c34fd646a930409/display?to_ext=fastqsanger
+      filetype: fastqsanger   # mutant_R1.fastq, 4 MB
+    "Illumina R2 reads":
+      class: File
+      location: https://usegalaxy.org.au/api/datasets/a6e389a98c2d16782c268178aab3dd76/display?to_ext=fastqsanger
+      filetype: fastqsanger   # mutant_R2.fastq, 4 MB
+  outputs:
+    FastQC-R1: {asserts: {has_size: {min: 1}}}
+    FastQC-R2: {asserts: {has_size: {min: 1}}}
+    html_report: {asserts: {has_size: {min: 1}}}
+    stats: {asserts: {has_size: {min: 1}}}

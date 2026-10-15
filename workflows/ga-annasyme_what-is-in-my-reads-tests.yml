@@ -1,0 +1,15 @@
+# Test for the Galaxy Australia workflow "What is in my sequencing reads? - Version 1", published by annasyme
+# (workflow ed3e48a73b5aaa56), latest version, updated 25 Nov 2024.
+# Workflow file: ga-annasyme_what-is-in-my-reads.ga, copied from gtntesting workflow e8c63a1754aef12b on 15 Oct 2026.
+# Test runs on: usegalaxy.org.au, account gtntesting (API key in the GitHub secret GALAXY_API_KEY).
+# Test data: history "workflow-testing: small test data" (ee825ba6ed112e3a). The data must be public for this test to run.
+# Pass rule: all jobs finish without error, and every output exists and is not empty.
+- doc: Classify 4 MB of Illumina reads with Kraken2 and show the result as a Krona chart.
+  job:
+    "sequencing reads fastqsanger":
+      class: File
+      location: https://usegalaxy.org.au/api/datasets/a6e389a98c2d16783c34fd646a930409/display?to_ext=fastqsanger
+      filetype: fastqsanger   # mutant_R1.fastq, 4 MB
+  outputs:
+    "kraken2-report": {asserts: {has_size: {min: 1}}}
+    "output": {asserts: {has_size: {min: 1}}}

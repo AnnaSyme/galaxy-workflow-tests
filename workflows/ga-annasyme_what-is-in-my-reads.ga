@@ -1,0 +1,312 @@
+{
+    "a_galaxy_workflow": "true",
+    "annotation": "",
+    "comments": [
+        {
+            "child_steps": [
+                2,
+                3,
+                4
+            ],
+            "color": "lime",
+            "data": {
+                "title": "What species are they from?"
+            },
+            "id": 1,
+            "position": [
+                307.44147760597224,
+                336.3
+            ],
+            "size": [
+                740,
+                258
+            ],
+            "type": "frame"
+        },
+        {
+            "child_steps": [
+                1
+            ],
+            "color": "blue",
+            "data": {
+                "title": "How many reads are there?"
+            },
+            "id": 0,
+            "position": [
+                305.94147760597224,
+                0
+            ],
+            "size": [
+                467,
+                297
+            ],
+            "type": "frame"
+        }
+    ],
+    "creator": [
+        {
+            "class": "Person",
+            "identifier": "https://orcid.org/0000-0002-9906-0673",
+            "name": "Anna Syme"
+        }
+    ],
+    "format-version": "0.1",
+    "license": "GPL-3.0-or-later",
+    "name": "What is in my sequencing reads? - Version 1",
+    "report": {
+        "markdown": "\n# Workflow Execution Report\n\n## Workflow Inputs\n```galaxy\ninvocation_inputs()\n```\n\n## Workflow Outputs\n```galaxy\ninvocation_outputs()\n```\n\n## Workflow\n```galaxy\nworkflow_display()\n```\n"
+    },
+    "steps": {
+        "0": {
+            "annotation": "",
+            "content_id": null,
+            "errors": null,
+            "id": 0,
+            "input_connections": {},
+            "inputs": [
+                {
+                    "description": "",
+                    "name": "sequencing reads fastqsanger"
+                }
+            ],
+            "label": "sequencing reads fastqsanger",
+            "name": "Input dataset",
+            "outputs": [],
+            "position": {
+                "left": 0,
+                "top": 245.52682773217012
+            },
+            "tool_id": null,
+            "tool_state": "{\"optional\": false, \"tag\": null}",
+            "tool_version": null,
+            "type": "data_input",
+            "uuid": "e79d0fe3-e867-4fec-bcff-a44eec7ed14a",
+            "when": null,
+            "workflow_outputs": []
+        },
+        "1": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/seqkit_stats/seqkit_stats/2.9.0+galaxy0",
+            "errors": null,
+            "id": 1,
+            "input_connections": {
+                "input": {
+                    "id": 0,
+                    "output_name": "output"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "SeqKit statistics",
+            "outputs": [
+                {
+                    "name": "output",
+                    "type": "txt"
+                }
+            ],
+            "position": {
+                "left": 337.09698486328125,
+                "top": 66.12103271484375
+            },
+            "post_job_actions": {
+                "TagDatasetActionoutput": {
+                    "action_arguments": {
+                        "tags": "read-statistics"
+                    },
+                    "action_type": "TagDatasetAction",
+                    "output_name": "output"
+                }
+            },
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/seqkit_stats/seqkit_stats/2.9.0+galaxy0",
+            "tool_shed_repository": {
+                "changeset_revision": "70b975dca7b4",
+                "name": "seqkit_stats",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"all\": false, \"basename\": false, \"input\": {\"__class__\": \"ConnectedValue\"}, \"skip_err\": false, \"tabular\": false, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_uuid": null,
+            "tool_version": "2.9.0+galaxy0",
+            "type": "tool",
+            "uuid": "9a7aaa18-6139-4de2-91e5-132c004aad32",
+            "when": null,
+            "workflow_outputs": []
+        },
+        "2": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/kraken2/kraken2/2.1.3+galaxy1",
+            "errors": null,
+            "id": 2,
+            "input_connections": {
+                "single_paired|input_sequences": {
+                    "id": 0,
+                    "output_name": "output"
+                }
+            },
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool Kraken2",
+                    "name": "single_paired"
+                }
+            ],
+            "label": null,
+            "name": "Kraken2",
+            "outputs": [
+                {
+                    "name": "report_output",
+                    "type": "tabular"
+                },
+                {
+                    "name": "output",
+                    "type": "tabular"
+                }
+            ],
+            "position": {
+                "left": 327.26366484538374,
+                "top": 376.3165180090312
+            },
+            "post_job_actions": {
+                "HideDatasetActionoutput": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "output"
+                },
+                "TagDatasetActionreport_output": {
+                    "action_arguments": {
+                        "tags": "taxonomy-of-reads"
+                    },
+                    "action_type": "TagDatasetAction",
+                    "output_name": "report_output"
+                }
+            },
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/kraken2/kraken2/2.1.3+galaxy1",
+            "tool_shed_repository": {
+                "changeset_revision": "241a78eb2935",
+                "name": "kraken2",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"confidence\": \"0.0\", \"kraken2_database\": \"2020-02-05T235531Z_minikraken2_v2_8GB\", \"min_base_quality\": \"0\", \"minimum_hit_groups\": \"2\", \"quick\": false, \"report\": {\"create_report\": true, \"use_mpa_style\": false, \"report_zero_counts\": false, \"report_minimizer_data\": false}, \"single_paired\": {\"single_paired_selector\": \"no\", \"__current_case__\": 2, \"input_sequences\": {\"__class__\": \"ConnectedValue\"}}, \"split_reads\": false, \"use_names\": false, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_uuid": null,
+            "tool_version": "2.1.3+galaxy1",
+            "type": "tool",
+            "uuid": "ae9b08dd-31a6-41f2-be12-d2e23c9cdacb",
+            "when": null,
+            "workflow_outputs": [
+                {
+                    "label": "kraken2-report",
+                    "output_name": "report_output",
+                    "uuid": "83106729-6202-4896-804c-5d87b4cfbbb4"
+                }
+            ]
+        },
+        "3": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/krakentools_kreport2krona/krakentools_kreport2krona/1.2+galaxy1",
+            "errors": null,
+            "id": 3,
+            "input_connections": {
+                "report": {
+                    "id": 2,
+                    "output_name": "report_output"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Krakentools: Convert kraken report file",
+            "outputs": [
+                {
+                    "name": "output",
+                    "type": "tabular"
+                }
+            ],
+            "position": {
+                "left": 559.5262561535093,
+                "top": 380.37217121081403
+            },
+            "post_job_actions": {
+                "HideDatasetActionoutput": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "output"
+                }
+            },
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/krakentools_kreport2krona/krakentools_kreport2krona/1.2+galaxy1",
+            "tool_shed_repository": {
+                "changeset_revision": "2deaada69b14",
+                "name": "krakentools_kreport2krona",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"intermediate_ranks\": false, \"report\": {\"__class__\": \"ConnectedValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_uuid": null,
+            "tool_version": "1.2+galaxy1",
+            "type": "tool",
+            "uuid": "2bf5ad40-f9b1-4401-a618-6ee5b6ebcfe5",
+            "when": null,
+            "workflow_outputs": []
+        },
+        "4": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/crs4/taxonomy_krona_chart/taxonomy_krona_chart/2.7.1+galaxy0",
+            "errors": null,
+            "id": 4,
+            "input_connections": {
+                "type_of_data|input": {
+                    "id": 3,
+                    "output_name": "output"
+                }
+            },
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool Krona pie chart",
+                    "name": "type_of_data"
+                }
+            ],
+            "label": null,
+            "name": "Krona pie chart",
+            "outputs": [
+                {
+                    "name": "output",
+                    "type": "html"
+                }
+            ],
+            "position": {
+                "left": 795.1570305905962,
+                "top": 387.68368176887975
+            },
+            "post_job_actions": {
+                "TagDatasetActionoutput": {
+                    "action_arguments": {
+                        "tags": "taxonomy-of-reads-as-pie-chart"
+                    },
+                    "action_type": "TagDatasetAction",
+                    "output_name": "output"
+                }
+            },
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/crs4/taxonomy_krona_chart/taxonomy_krona_chart/2.7.1+galaxy0",
+            "tool_shed_repository": {
+                "changeset_revision": "7d01da0b9e18",
+                "name": "taxonomy_krona_chart",
+                "owner": "crs4",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"combine_inputs\": false, \"root_name\": \"Root\", \"type_of_data\": {\"type_of_data_selector\": \"text\", \"__current_case__\": 1, \"input\": {\"__class__\": \"ConnectedValue\"}}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_uuid": null,
+            "tool_version": "2.7.1+galaxy0",
+            "type": "tool",
+            "uuid": "64a4a207-9e17-4230-b07e-4e62cdcde85e",
+            "when": null,
+            "workflow_outputs": [
+                {
+                    "label": "output",
+                    "output_name": "output",
+                    "uuid": "6c1280e9-75f1-4bd3-9281-c28afcde344e"
+                }
+            ]
+        }
+    },
+    "tags": [],
+    "uuid": "0f74ac11-d010-419b-8f4b-e984f450e41a",
+    "version": 0
+}

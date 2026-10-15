@@ -1,0 +1,253 @@
+{
+    "a_galaxy_workflow": "true",
+    "annotation": "Input = genome.fasta.\n \nOutputs = soft_masked_genome.fasta, hard_masked_genome.fasta and table of repeats found. \n\nRuns RepeatModeler with default settings, uses the output of this (repeat library) as input into RepeatMasker. \n\nRuns RepeatMasker with default settings except for: Skip masking of simple tandem repeats and low complexity regions. (-nolow) : default set to yes.  Perform softmasking instead of hardmasking - set to yes. \n\nConverts the soft-masked genome to hard-masked for for use in other tools if required. \n\nWorkflow report displays an edited table of repeats found. Note: a known bug is that sometimes the workflow report text resets to default text. To restore, look for an earlier workflow version with correct workflow report text, and copy and paste report text into current version.\n",
+    "comments": [],
+    "format-version": "0.1",
+    "name": "Repeat masking - TSI",
+    "report": {
+        "markdown": "\n# Workflow Execution Report\nWorkflow name: Repeat masking - TSI\n\n## Table of repeats found \n```galaxy\nhistory_dataset_display(output=\"Repeats_output_table\")\n```\n## Galaxy Australia\nThanks for using Galaxy! When you use Galaxy Australia to support your publication or project, please acknowledge its use with the following statement:\n\"This work is supported by Galaxy Australia, a service provided by the Australian Biocommons and its partners. The service receives NCRIS funding through Bioplatforms Australia and the Australian Research Data Commons (https://doi.org/10.47486/PL105), as well as The University of Melbourne and Queensland Government RICF funding.\"\n"
+    },
+    "source_metadata": {
+        "trs_server": "workflowhub",
+        "trs_tool_id": "875",
+        "trs_url": "https://workflowhub.eu/ga4gh/trs/v2/tools/875/versions/3",
+        "trs_version_id": "3"
+    },
+    "steps": {
+        "0": {
+            "annotation": "",
+            "content_id": null,
+            "errors": null,
+            "id": 0,
+            "input_connections": {},
+            "inputs": [
+                {
+                    "description": "",
+                    "name": "genome.fasta"
+                }
+            ],
+            "label": "genome.fasta",
+            "name": "Input dataset",
+            "outputs": [],
+            "position": {
+                "left": 0,
+                "top": 0
+            },
+            "tool_id": null,
+            "tool_state": "{\"optional\": false, \"tag\": null}",
+            "tool_version": null,
+            "type": "data_input",
+            "uuid": "a993c3ad-a74a-447e-ac84-51d7a0875acf",
+            "when": null,
+            "workflow_outputs": []
+        },
+        "1": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/csbl/repeatmodeler/repeatmodeler/2.0.4+galaxy1",
+            "errors": null,
+            "id": 1,
+            "input_connections": {
+                "input_file": {
+                    "id": 0,
+                    "output_name": "output"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "RepeatModeler",
+            "outputs": [
+                {
+                    "name": "sequences",
+                    "type": "fasta"
+                },
+                {
+                    "name": "seeds",
+                    "type": "stockholm"
+                }
+            ],
+            "position": {
+                "left": 98.8740234375,
+                "top": 171.6636962890625
+            },
+            "post_job_actions": {},
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/csbl/repeatmodeler/repeatmodeler/2.0.4+galaxy1",
+            "tool_shed_repository": {
+                "changeset_revision": "8661b2607b7e",
+                "name": "repeatmodeler",
+                "owner": "csbl",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"input_file\": {\"__class__\": \"ConnectedValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_uuid": null,
+            "tool_version": "2.0.4+galaxy1",
+            "type": "tool",
+            "uuid": "40e38c4c-300f-46cc-9548-24a890d1fec3",
+            "when": null,
+            "workflow_outputs": [
+                {
+                    "label": "seeds",
+                    "output_name": "seeds",
+                    "uuid": "a85f8215-421e-457d-aeb2-f2dfd2cc9eff"
+                },
+                {
+                    "label": "sequences",
+                    "output_name": "sequences",
+                    "uuid": "91da7fdd-e3f3-4a38-8d54-67d63e4c3082"
+                }
+            ]
+        },
+        "2": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/repeat_masker/repeatmasker_wrapper/4.1.5+galaxy0",
+            "errors": null,
+            "id": 2,
+            "input_connections": {
+                "input_fasta": {
+                    "id": 0,
+                    "output_name": "output"
+                },
+                "repeat_source|repeat_lib": {
+                    "id": 1,
+                    "output_name": "sequences"
+                }
+            },
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool RepeatMasker",
+                    "name": "repeat_source"
+                }
+            ],
+            "label": null,
+            "name": "RepeatMasker",
+            "outputs": [
+                {
+                    "name": "output_masked_genome",
+                    "type": "fasta"
+                },
+                {
+                    "name": "output_log",
+                    "type": "tabular"
+                },
+                {
+                    "name": "output_table",
+                    "type": "txt"
+                },
+                {
+                    "name": "output_repeat_catalog",
+                    "type": "txt"
+                }
+            ],
+            "position": {
+                "left": 346.1359388563369,
+                "top": 9.00169542100697
+            },
+            "post_job_actions": {
+                "TagDatasetActionoutput_masked_genome": {
+                    "action_arguments": {
+                        "tags": "name:soft_masked_genome.fasta"
+                    },
+                    "action_type": "TagDatasetAction",
+                    "output_name": "output_masked_genome"
+                },
+                "TagDatasetActionoutput_table": {
+                    "action_arguments": {
+                        "tags": "#table-of-repeats-found"
+                    },
+                    "action_type": "TagDatasetAction",
+                    "output_name": "output_table"
+                }
+            },
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/repeat_masker/repeatmasker_wrapper/4.1.5+galaxy0",
+            "tool_shed_repository": {
+                "changeset_revision": "ba6d2c32f797",
+                "name": "repeat_masker",
+                "owner": "bgruening",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"advanced\": {\"is_only\": false, \"is_clip\": false, \"no_is\": false, \"rodspec\": false, \"primspec\": false, \"nolow\": true, \"noint\": false, \"norna\": false, \"alu\": false, \"div\": false, \"search_speed\": \"\", \"frag\": \"40000\", \"gc\": null, \"gccalc\": false, \"nocut\": false, \"xout\": false, \"keep_alignments\": false, \"invert_alignments\": false, \"poly\": false}, \"excln\": true, \"gff\": false, \"input_fasta\": {\"__class__\": \"ConnectedValue\"}, \"repeat_source\": {\"source_type\": \"library\", \"__current_case__\": 2, \"repeat_lib\": {\"__class__\": \"ConnectedValue\"}, \"cutoff\": \"225\"}, \"xsmall\": true, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_uuid": null,
+            "tool_version": "4.1.5+galaxy0",
+            "type": "tool",
+            "uuid": "12af9484-e84a-4122-9f86-36f380f1850d",
+            "when": null,
+            "workflow_outputs": [
+                {
+                    "label": "output_log",
+                    "output_name": "output_log",
+                    "uuid": "318e1cf9-59b2-4392-8f60-ef77d13c233e"
+                },
+                {
+                    "label": "Repeats_output_table",
+                    "output_name": "output_table",
+                    "uuid": "ce7928d3-b46f-4bdc-9cd8-12c888502fb9"
+                },
+                {
+                    "label": "output_repeat_catalog",
+                    "output_name": "output_repeat_catalog",
+                    "uuid": "5fc60a10-9564-41ab-921f-51d5d0ee65e3"
+                },
+                {
+                    "label": "output_masked_genome",
+                    "output_name": "output_masked_genome",
+                    "uuid": "d6ccd2ba-54c8-4b23-8af0-82d82f746aad"
+                }
+            ]
+        },
+        "3": {
+            "annotation": "Replace all lowercase (except in headers) with Ns",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_sed_tool/9.3+galaxy1",
+            "errors": null,
+            "id": 3,
+            "input_connections": {
+                "infile": {
+                    "id": 2,
+                    "output_name": "output_masked_genome"
+                }
+            },
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool Text transformation",
+                    "name": "infile"
+                }
+            ],
+            "label": "Convert soft-masking to hard-masking",
+            "name": "Text transformation",
+            "outputs": [
+                {
+                    "name": "output",
+                    "type": "input"
+                }
+            ],
+            "position": {
+                "left": 643.3367919921875,
+                "top": 66.3587646484375
+            },
+            "post_job_actions": {
+                "TagDatasetActionoutput": {
+                    "action_arguments": {
+                        "tags": "name:hard_masked_genome.fasta"
+                    },
+                    "action_type": "TagDatasetAction",
+                    "output_name": "output"
+                }
+            },
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_sed_tool/9.3+galaxy1",
+            "tool_shed_repository": {
+                "changeset_revision": "86755160afbf",
+                "name": "text_processing",
+                "owner": "bgruening",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"adv_opts\": {\"adv_opts_selector\": \"basic\", \"__current_case__\": 0}, \"code\": \"/^[^>]/s/[acgt]/N/g\", \"infile\": {\"__class__\": \"RuntimeValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_uuid": null,
+            "tool_version": "9.3+galaxy1",
+            "type": "tool",
+            "uuid": "18ee8cfa-8b95-40ca-bac3-15b5d0a8a331",
+            "when": null,
+            "workflow_outputs": []
+        }
+    },
+    "tags": [],
+    "uuid": "9eb61fff-bed7-4076-a248-f6734c3a8159",
+    "version": 0
+}
