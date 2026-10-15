@@ -24,7 +24,7 @@ The Action runs by hand only (Run workflow in the Actions tab). A monthly schedu
 
 **Test data**
 
-Very small subsets, 4 MB or less, so that the tests are quick and the load on Galaxy Australia is low. Each test file gives the URL of each input dataset.
+Very small subsets, 4 MB or less, so that the tests are quick and the load on Galaxy Australia is low. Each test file gives the URL of each input dataset. The data is held in the Galaxy Australia test account and is readable by link.
 
 **How to add a workflow**
 

@@ -2,7 +2,9 @@
 # (workflow ed3e48a73b5aaa56), latest version, updated 25 Nov 2024.
 # Workflow file: ga-annasyme_what-is-in-my-reads.ga, copied from gtntesting workflow e8c63a1754aef12b on 15 Oct 2026.
 # Test runs on: usegalaxy.org.au, account gtntesting (API key in the GitHub secret GALAXY_API_KEY).
-# Test data: history "workflow-testing: small test data" (ee825ba6ed112e3a). The data must be public for this test to run.
+# Test data: history "workflow-testing: small test data" (ee825ba6ed112e3a) in gtntesting.
+#   The dataset URLs below are readable by anyone with the link (checked 15 Oct 2026). The history itself is not published.
+#   If the datasets are deleted or purged, this test fails. A Zenodo copy would be more durable.
 # Pass rule: all jobs finish without error, and every output exists and is not empty.
 - doc: Classify 4 MB of Illumina reads with Kraken2 and show the result as a Krona chart.
   job:
