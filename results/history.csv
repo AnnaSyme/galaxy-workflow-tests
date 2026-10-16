@@ -10,3 +10,6 @@ date,run,name,title,source,id,version,result,version_warnings,run_url,problem
 2026-10-16,9,ga-annasyme_qc-of-illumina-data,QC of Illumina data,galaxy,db0867756cb233b7,6,pass,0,https://github.com/AnnaSyme/galaxy-workflow-tests/actions/runs/38830006079,
 2026-10-16,9,ga-annasyme_what-is-in-my-reads,What is in my sequencing reads? - Version 1,galaxy,ed3e48a73b5aaa56,24,pass,0,https://github.com/AnnaSyme/galaxy-workflow-tests/actions/runs/38830006079,
 2026-10-16,9,wfh-875_repeat-masking-tsi,Repeat masking - TSI,workflowhub,875,3,pass,0,https://github.com/AnnaSyme/galaxy-workflow-tests/actions/runs/38830006079,
+2026-10-16,10,ga-annasyme_qc-of-illumina-data,QC of Illumina data,galaxy,db0867756cb233b7,6,pass,0,https://github.com/AnnaSyme/galaxy-workflow-tests/actions/runs/38841141746,
+2026-10-16,10,ga-annasyme_what-is-in-my-reads,What is in my sequencing reads? - Version 1,galaxy,ed3e48a73b5aaa56,24,pass,0,https://github.com/AnnaSyme/galaxy-workflow-tests/actions/runs/38841141746,
+2026-10-16,10,wfh-875_repeat-masking-tsi,Repeat masking - TSI,workflowhub,875,3,pass,0,https://github.com/AnnaSyme/galaxy-workflow-tests/actions/runs/38841141746,
